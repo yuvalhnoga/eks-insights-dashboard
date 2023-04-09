@@ -1,0 +1,35 @@
+# Copyright 2022 Amazon.com and its affiliates; all rights reserved. This file is Amazon Web Services Content and may not be duplicated or distributed without permission.
+
+# Default values for kubecost-s3-exporter.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+namespace: "kubecost-s3-exporter"
+
+image: "<registry_url>/<repo>:<tag>"
+imagePullPolicy: Always
+
+cronJob:
+  name: "kubecost-s3-exporter"
+  schedule: "0 0 * * *"
+
+serviceAccount:
+  create: true
+  name: "kubecost-s3-exporter"
+  role: "" # Example: arn:aws:iam::<account_id>:role/<role_name>
+
+env:
+  - name: "S3_BUCKET_NAME"
+    value: "kubecost-data"
+  - name: "KUBECOST_API_ENDPOINT"
+    value: "http://kubecost-cost-analyzer.kubecost:9090" # Change to your Kubecost endpoint if necessary
+  - name: "CLUSTER_ARN"
+    value: "<cluster_arn>" # Change to your EKS cluster ARN
+  - name: "IRSA_PARENT_IAM_ROLE_ARN"
+    value: ""
+  - name: "GRANULARITY"
+    value: "hourly"
+  - name: "LABELS"
+    value: "" # Comma-separated list of labels. Example: "app, chart"
+  - name: "PYTHONUNBUFFERED"
+    value: "1"
